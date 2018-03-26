@@ -23,10 +23,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '&g&5g3!5&w#vc_u3g#la&n3hswbfjmk#*r8i14vvfhnle$dk8)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG=True
+
+CORS_ORIGIN_ALLOW_ALL = DEBUG
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -40,6 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'blog',
 ]
+if DEBUG is True:
+     INSTALLED_APPS += ('corsheaders', )
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -50,13 +53,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+APPEND_SLASH = True
 ROOT_URLCONF = 'frontend_training.urls'
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(PROJECT_ROOT, 'static'),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,6 +72,7 @@ TEMPLATES = [
         },
     },
 ]
+print(os.path.join(PROJECT_ROOT, 'static'))
 
 WSGI_APPLICATION = 'frontend_training.wsgi.application'
 
@@ -120,3 +125,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
