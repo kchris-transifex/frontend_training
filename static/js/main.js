@@ -5,6 +5,7 @@
 
   var Post = Backbone.Model.extend({
     defaults: {
+      post_title: '',
       post_text: '',
       pub_date: '',
     },
@@ -25,28 +26,53 @@
   var PostView = Marionette.ItemView.extend({
     template: "#post-template",
 
-    initialize: function() {
-      console.log('PostView initialized');
-    },
   });
 
   var PostsView = Marionette.CollectionView.extend({
     childView: PostView,
-
-    initialize: function() {
-      console.log('PostsView initialized');
-    },
 
   });
 
   var HeaderView = Marionette.LayoutView.extend({
     template: "#header-template",
     events: {
-      'click': 'onClickButton'
+      'click #add_blogpost': 'onClickAddBlogPost',
     },
-    onClickButton: function() {
-      console.log('clicked');
+    onClickAddBlogPost: function() {
+      $("#myModal").modal('show');
     },
+  });
+
+  var ModalView = Marionette.LayoutView.extend({
+    template: "#modal-template",
+
+    initialize: function(args) {
+         console.log(args);
+      this.collection = args.collection;
+    },
+
+    events: {
+      'click #cancel': 'onClickCancel',
+      'click #submit': 'onClickSubmit',
+    },
+
+    onClickCancel: function() {
+      $("#myModal").modal('hide');
+    },
+
+    onClickSubmit: function() {
+      var post_title = $("#post_title").val();
+      var post_content = $("#post_content").val();
+      console.log(post_title);
+      console.log(post_content);
+
+      this.collection.create({post_title:post_title, 
+         post_text:post_content, 
+         pub_date:"2018-03-04T11:02:08.896376Z"});
+   
+      $("#myModal").modal('hide');
+    },
+
   });
 
   var AppLayoutView = Marionette.LayoutView.extend({
@@ -55,6 +81,7 @@
     regions: {
       header: "#header",
       content: "#content",
+      modal: "#modal",
     },
 
     initialize: function() {
@@ -65,6 +92,7 @@
     onRender: function() {
       this.showChildView('header', new HeaderView())
       this.showChildView('content', new PostsView({collection: this.collection}))
+      this.showChildView('modal', new ModalView({collection: this.collection}))
     },
 
   });
