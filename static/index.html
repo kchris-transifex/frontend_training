@@ -31,6 +31,10 @@
       </div>
     </script>
 
+    <script type="text/template" id="content-template">
+       <div id="posts"></div>
+    </script>
+
     <script id="layout-template" type="text/template">
       <div id="header"></div>
       <div class="container">
@@ -42,7 +46,9 @@
       <div class="row">
 
         <div class="col-sm-8 blog-main">
-          <div id="content"></div>
+          <div id="content">
+            <div id="posts"></div>
+          </div>
         </div>
       </div>
       </div>
@@ -53,9 +59,8 @@
       <div class="blog-post">
         <h2 class="blog-post-title"><%- post_title %></h2>
         <p class="blog-post-meta"><%- pub_date %></p>
+      <div class="blog-post-content"><%- post_text %></div>
       </div>
-      <%- post_text %>
-      <br>
     </script>
     
     <script type="text/template" id="modal-template">
@@ -76,6 +81,7 @@
 			</div>
 		    </div>
 		    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger pull-left" id="delete">Delete</button>
 			<button type="button" class="btn btn-default" id="cancel">Close</button>
 			<button type="button" class="btn btn-primary" id="submit" >Save changes</button>
 		    </div>
